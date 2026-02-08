@@ -44,16 +44,25 @@
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
+    
     body{
       margin:0;
       font-family: var(--sans);
       color: var(--text);
+    
+      /* Баннер + “дорогая” подложка для читаемости */
       background:
         radial-gradient(1200px 900px at 20% 10%, rgba(255,255,255,.08), transparent 55%),
         radial-gradient(900px 600px at 85% 30%, rgba(255,255,255,.06), transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
+        linear-gradient(180deg, rgba(7,8,11,.78), rgba(11,13,18,.92)),
+        url("assets/banner.jpg");
+    
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       overflow-x:hidden;
     }
+
 
     .wrap{
       min-height:100%;
@@ -330,50 +339,70 @@
       </article>
 
       <!-- Right: info panel -->
+      <!-- Right: manual join panel -->
       <aside class="panel">
         <div class="panel-inner">
           <div class="meta">
             <div>
-              <div class="label">Place ID</div>
-              <div class="value">8416011646</div>
+              <div class="label">Ручной вход</div>
+              <div class="value">Если автозапуск не сработал</div>
             </div>
             <div style="text-align:right">
-              <div class="label">Join code</div>
-              <div class="value">CALYX</div>
+              <div class="label">Join Code</div>
+              <div class="value" id="manualCodeText">CALYX</div>
             </div>
           </div>
-
+      
           <div class="grid">
-            <div class="label">Как это работает</div>
+            <div class="label">Что нужно заранее</div>
             <ul class="steps">
-              <li><span class="badge">1</span><span>Ты нажимаешь <b>Открыть в Roblox</b>.</span></li>
-              <li><span class="badge">2</span><span>Браузер пытается открыть ссылку вида <span style="font-family:var(--mono)">roblox://…</span>.</span></li>
-              <li><span class="badge">3</span><span>Roblox Player запускается и подключает к приватному серверу.</span></li>
+              <li><span class="badge">1</span><span>Купи игру в Roblox: <b>120 Robux</b>.</span></li>
+              <li><span class="badge">2</span><span>Вступи в Roblox-группу проекта (нужна для доступа).</span></li>
             </ul>
-
-            <div class="label" style="margin-top:10px;">Если кнопка не сработала</div>
+      
+            <div class="btnRow" style="margin-top: 6px;">
+              <a class="btn alt mini" target="_blank" rel="noopener"
+                 href="https://www.roblox.com/share/g/32364253">
+                Открыть группу
+              </a>
+      
+              <button id="copyManualCode" class="btn alt mini" type="button">
+                Скопировать Join Code
+              </button>
+            </div>
+      
+            <div class="label" style="margin-top:10px;">Как зайти вручную</div>
             <ul class="steps">
-              <li><span class="badge">•</span><span>На iOS/Android иногда нужно подтверждение открытия приложения.</span></li>
-              <li><span class="badge">•</span><span>На ПК некоторые браузеры блокируют автопереход — тогда используй “Открыть через сайт”.</span></li>
+              <li><span class="badge">3</span><span>Открой игру и запусти сессию.</span></li>
+              <li><span class="badge">4</span><span>В меню нажми <b>Private Servers</b>.</span></li>
+              <li><span class="badge">5</span><span>В поле <b>Input a Join Code</b> введи <b>CALYX</b> и нажми <b>Join</b>.</span></li>
             </ul>
-
-            <button id="copy" class="btn alt mini" type="button">
-              Скопировать ссылку на сайт
-            </button>
-
-            <div class="status" style="margin-top:0;">
-              <strong>Для Discord-кнопки:</strong> используй URL этой страницы (GitHub Pages).
+      
+            <div class="status" style="margin-top: 4px;">
+              <strong>Совет:</strong> если не пускает — проверь, что ты в группе, и игра куплена.
+            </div>
+      
+            <div class="label" style="margin-top:10px;">Быстрый способ (через ссылку)</div>
+            <div class="btnRow" style="margin-top: 6px;">
+              <a class="btn alt mini" target="_blank" rel="noopener"
+                 href="https://www.roblox.com/games/8416011646?privateServerLinkCode=PszLuw">
+                Открыть через сайт
+              </a>
+            </div>
+      
+            <div class="status" style="margin-top: 4px;">
+              <strong>Для Discord-кнопки:</strong> ставь ссылку на эту страницу (GitHub Pages). Дальше человек нажимает “Открыть в Roblox”.
             </div>
           </div>
         </div>
       </aside>
+
     </section>
   </main>
 
   <script>
     // === Настройки приватного сервера ===
-    const PLACE_ID = "8416011646";
-    const JOIN_CODE = "PszLuw";
+    const MANUAL_JOIN_CODE_TEXT = "CALYX";
 
     // Deep link (в приложение)
     const deepLink = `roblox://placeId=${PLACE_ID}&launchData=${encodeURIComponent("psjoincode=" + JOIN_CODE)}`;
@@ -418,6 +447,24 @@
         prompt("Скопируй ссылку:", window.location.href);
       }
     });
+
+        // Ручной Join Code (CALYX)
+    const manualCodeEl = document.getElementById("manualCodeText");
+    const copyManualBtn = document.getElementById("copyManualCode");
+    if (manualCodeEl) manualCodeEl.textContent = MANUAL_JOIN_CODE_TEXT;
+    
+    if (copyManualBtn) {
+      copyManualBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(MANUAL_JOIN_CODE_TEXT);
+          copyManualBtn.textContent = "Скопировано ✓";
+          setTimeout(() => copyManualBtn.textContent = "Скопировать Join Code", 1400);
+        } catch {
+          prompt("Скопируй Join Code:", MANUAL_JOIN_CODE_TEXT);
+        }
+      });
+    }
+
   </script>
 </body>
 </html>
