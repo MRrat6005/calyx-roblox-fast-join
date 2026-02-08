@@ -7,7 +7,7 @@
   <title>Private Server • Roblox</title>
   <meta name="description" content="Переходник для входа на приватный сервер Roblox. Открывает приложение Roblox Player." />
 
-  <!-- Open Graph (красиво смотрится при шаринге) -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Private Server • Roblox" />
   <meta property="og:description" content="Нажми, чтобы открыть Roblox Player и зайти на приватный сервер." />
   <meta property="og:type" content="website" />
@@ -16,16 +16,14 @@
     :root{
       --bg0:#07080b;
       --bg1:#0b0d12;
-      --card:#0f121a;
       --line: rgba(255,255,255,.08);
       --text:#e9ecf3;
       --muted: rgba(233,236,243,.70);
       --muted2: rgba(233,236,243,.55);
       --shadow: 0 18px 70px rgba(0,0,0,.55);
       --radius: 22px;
-      --radius2: 16px;
 
-      /* “дорогой” акцент — очень мягкий, без кричащих цветов */
+      /* subtle premium accents */
       --accentA: rgba(255,255,255,.14);
       --accentB: rgba(255,255,255,.06);
 
@@ -34,9 +32,6 @@
       --btnHover: rgba(255,255,255,.98);
       --btnAlt: rgba(255,255,255,.08);
       --btnAltHover: rgba(255,255,255,.12);
-      --ok: rgba(120,255,180,.90);
-      --warn: rgba(255,210,120,.90);
-      --bad: rgba(255,140,140,.95);
 
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Apple Color Emoji","Segoe UI Emoji";
@@ -44,25 +39,28 @@
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
-    
     body{
       margin:0;
       font-family: var(--sans);
       color: var(--text);
-    
-      /* Баннер + “дорогая” подложка для читаемости */
+
+      /* ✅ Background banner (place your image here) */
       background:
         radial-gradient(1200px 900px at 20% 10%, rgba(255,255,255,.08), transparent 55%),
         radial-gradient(900px 600px at 85% 30%, rgba(255,255,255,.06), transparent 55%),
         linear-gradient(180deg, rgba(7,8,11,.78), rgba(11,13,18,.92)),
         url("assets/banner.jpg");
-    
+
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
       overflow-x:hidden;
     }
 
+    /* Optional: avoid fixed background on some mobile browsers */
+    @media (max-width: 860px){
+      body{ background-attachment: scroll; }
+    }
 
     .wrap{
       min-height:100%;
@@ -78,7 +76,6 @@
       grid-template-columns: 1.1fr .9fr;
       gap: 18px;
     }
-
     @media (max-width: 860px){
       .shell{ grid-template-columns: 1fr; }
     }
@@ -90,19 +87,19 @@
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
       overflow:hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-
     .card::before{
       content:"";
       position:absolute;
       inset:-2px;
-      background: radial-gradient(1000px 420px at 20% 0%, var(--accentA), transparent 55%),
-                  radial-gradient(900px 420px at 100% 20%, var(--accentB), transparent 60%);
+      background:
+        radial-gradient(1000px 420px at 20% 0%, var(--accentA), transparent 55%),
+        radial-gradient(900px 420px at 100% 20%, var(--accentB), transparent 60%);
       pointer-events:none;
-      filter: blur(0px);
       opacity:.9;
     }
-
     .card-inner{
       position:relative;
       padding: 26px;
@@ -121,7 +118,6 @@
       letter-spacing:.2px;
       user-select:none;
     }
-
     .dot{
       width:8px;height:8px;border-radius:999px;
       background: rgba(255,255,255,.55);
@@ -134,19 +130,12 @@
       line-height: 1.05;
       letter-spacing: -0.04em;
     }
-
     .lead{
       margin: 0 0 18px;
       color: var(--muted);
       font-size: 15.5px;
       line-height: 1.55;
       max-width: 58ch;
-    }
-
-    .grid{
-      display:grid;
-      gap: 12px;
-      margin-top: 14px;
     }
 
     .btnRow{
@@ -172,6 +161,7 @@
       transition: transform .18s ease, background .18s ease, opacity .18s ease;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
+      white-space: nowrap;
     }
 
     .primary{
@@ -179,6 +169,7 @@
       color: var(--btnText);
     }
     .primary:hover{ background: var(--btnHover); transform: translateY(-1px); }
+
     .alt{
       background: var(--btnAlt);
       color: var(--text);
@@ -198,8 +189,9 @@
       border: 1px solid var(--line);
       background: rgba(0,0,0,.20);
       overflow:hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-
     .panel-inner{
       padding: 18px 18px 16px;
     }
@@ -211,35 +203,33 @@
       gap: 12px;
       margin-bottom: 12px;
     }
-
     .label{
       color: var(--muted2);
       font-size: 12.5px;
     }
-
     .value{
       font-family: var(--mono);
       font-size: 13px;
       color: rgba(233,236,243,.80);
     }
 
+    .grid{ display:grid; gap: 12px; margin-top: 10px; }
+
     .steps{
       display:grid;
       gap: 10px;
-      margin: 12px 0 0;
+      margin: 10px 0 0;
       padding:0;
       list-style:none;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.45;
     }
-
     .steps li{
       display:flex;
       gap: 10px;
       align-items:flex-start;
     }
-
     .badge{
       flex: 0 0 auto;
       width: 22px; height: 22px;
@@ -275,19 +265,7 @@
       flex-wrap:wrap;
     }
 
-    .link{
-      color: rgba(233,236,243,.72);
-      text-decoration:none;
-      border-bottom: 1px solid rgba(233,236,243,.18);
-      padding-bottom: 2px;
-    }
-    .link:hover{ color: rgba(233,236,243,.92); border-bottom-color: rgba(233,236,243,.35); }
-
-    .icon{
-      width: 18px;
-      height: 18px;
-      display:inline-block;
-    }
+    .icon{ width: 18px; height: 18px; display:inline-block; }
     .icon svg{ width:100%; height:100%; }
   </style>
 </head>
@@ -308,7 +286,6 @@
           </p>
 
           <div class="btnRow">
-            <!-- Основная кнопка -->
             <a id="openApp" class="btn primary" href="#">
               <span class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
@@ -320,7 +297,6 @@
               Открыть в Roblox
             </a>
 
-            <!-- Фоллбек -->
             <a class="btn alt" target="_blank" rel="noopener"
                href="https://www.roblox.com/games/8416011646?privateServerLinkCode=PszLuw">
               Открыть через сайт
@@ -338,7 +314,6 @@
         </div>
       </article>
 
-      <!-- Right: info panel -->
       <!-- Right: manual join panel -->
       <aside class="panel">
         <div class="panel-inner">
@@ -352,36 +327,36 @@
               <div class="value" id="manualCodeText">CALYX</div>
             </div>
           </div>
-      
+
           <div class="grid">
             <div class="label">Что нужно заранее</div>
             <ul class="steps">
               <li><span class="badge">1</span><span>Купи игру в Roblox: <b>120 Robux</b>.</span></li>
               <li><span class="badge">2</span><span>Вступи в Roblox-группу проекта (нужна для доступа).</span></li>
             </ul>
-      
+
             <div class="btnRow" style="margin-top: 6px;">
               <a class="btn alt mini" target="_blank" rel="noopener"
                  href="https://www.roblox.com/share/g/32364253">
                 Открыть группу
               </a>
-      
+
               <button id="copyManualCode" class="btn alt mini" type="button">
                 Скопировать Join Code
               </button>
             </div>
-      
+
             <div class="label" style="margin-top:10px;">Как зайти вручную</div>
             <ul class="steps">
               <li><span class="badge">3</span><span>Открой игру и запусти сессию.</span></li>
               <li><span class="badge">4</span><span>В меню нажми <b>Private Servers</b>.</span></li>
               <li><span class="badge">5</span><span>В поле <b>Input a Join Code</b> введи <b>CALYX</b> и нажми <b>Join</b>.</span></li>
             </ul>
-      
+
             <div class="status" style="margin-top: 4px;">
               <strong>Совет:</strong> если не пускает — проверь, что ты в группе, и игра куплена.
             </div>
-      
+
             <div class="label" style="margin-top:10px;">Быстрый способ (через ссылку)</div>
             <div class="btnRow" style="margin-top: 6px;">
               <a class="btn alt mini" target="_blank" rel="noopener"
@@ -389,9 +364,13 @@
                 Открыть через сайт
               </a>
             </div>
-      
+
+            <button id="copy" class="btn alt" type="button" style="margin-top: 2px;">
+              Скопировать ссылку на сайт
+            </button>
+
             <div class="status" style="margin-top: 4px;">
-              <strong>Для Discord-кнопки:</strong> ставь ссылку на эту страницу (GitHub Pages). Дальше человек нажимает “Открыть в Roblox”.
+              <strong>Для Discord-кнопки:</strong> используй URL этой страницы (GitHub Pages).
             </div>
           </div>
         </div>
@@ -401,10 +380,12 @@
   </main>
 
   <script>
-    // === Настройки приватного сервера ===
+    // === Settings ===
+    const PLACE_ID = "8416011646";
+    const JOIN_CODE = "PszLuw";
     const MANUAL_JOIN_CODE_TEXT = "CALYX";
 
-    // Deep link (в приложение)
+    // Deep link (opens the Roblox app)
     const deepLink = `roblox://placeId=${PLACE_ID}&launchData=${encodeURIComponent("psjoincode=" + JOIN_CODE)}`;
 
     const statusEl = document.getElementById("status");
@@ -413,22 +394,19 @@
     const yearEl = document.getElementById("y");
     yearEl.textContent = new Date().getFullYear();
 
-    function setStatus(kind, text){
-      statusEl.innerHTML = text;
-      // лёгкая семантика по цветам через border/эмодзи не делаем — оставляем “дорого” нейтральным
+    function setStatus(_kind, html){
+      statusEl.innerHTML = html;
     }
 
-    // Попытка открыть приложение по клику (это важно: браузеры любят user gesture)
+    // Open app on click (user gesture)
     openApp.addEventListener("click", (e) => {
       e.preventDefault();
 
       setStatus("try", "<strong>Открываю Roblox…</strong> Если появится запрос браузера — подтверди.");
 
-      // Нативный переход в roblox://
       window.location.href = deepLink;
 
-      // Фоллбек-подсказка через пару секунд
-      // (мы НЕ можем 100% понять, открылось ли приложение — браузеры это скрывают)
+      // We can't reliably detect app-open; give a hint fallback.
       setTimeout(() => {
         setStatus("hint",
           "<strong>Если Roblox не открылся:</strong> нажми “Открыть через сайт” и затем <b>Play</b>."
@@ -436,23 +414,22 @@
       }, 1800);
     });
 
-    // Копирование текущей страницы (удобно для вставки в Discord)
+    // Copy current page URL
     copyBtn.addEventListener("click", async () => {
       try{
         await navigator.clipboard.writeText(window.location.href);
         copyBtn.textContent = "Ссылка скопирована ✓";
         setTimeout(() => copyBtn.textContent = "Скопировать ссылку на сайт", 1400);
       }catch{
-        // очень старые браузеры
         prompt("Скопируй ссылку:", window.location.href);
       }
     });
 
-        // Ручной Join Code (CALYX)
+    // Manual Join Code (CALYX)
     const manualCodeEl = document.getElementById("manualCodeText");
     const copyManualBtn = document.getElementById("copyManualCode");
     if (manualCodeEl) manualCodeEl.textContent = MANUAL_JOIN_CODE_TEXT;
-    
+
     if (copyManualBtn) {
       copyManualBtn.addEventListener("click", async () => {
         try {
@@ -464,7 +441,6 @@
         }
       });
     }
-
   </script>
 </body>
 </html>
