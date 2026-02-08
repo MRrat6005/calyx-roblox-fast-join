@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Private Server • Roblox</title>
+  <meta name="description" content="Переходник для входа на приватный сервер Roblox. Открывает приложение Roblox Player." />
+
+  <!-- Open Graph (красиво смотрится при шаринге) -->
+  <meta property="og:title" content="Private Server • Roblox" />
+  <meta property="og:description" content="Нажми, чтобы открыть Roblox Player и зайти на приватный сервер." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    :root{
+      --bg0:#07080b;
+      --bg1:#0b0d12;
+      --card:#0f121a;
+      --line: rgba(255,255,255,.08);
+      --text:#e9ecf3;
+      --muted: rgba(233,236,243,.70);
+      --muted2: rgba(233,236,243,.55);
+      --shadow: 0 18px 70px rgba(0,0,0,.55);
+      --radius: 22px;
+      --radius2: 16px;
+
+      /* “дорогой” акцент — очень мягкий, без кричащих цветов */
+      --accentA: rgba(255,255,255,.14);
+      --accentB: rgba(255,255,255,.06);
+
+      --btn: rgba(255,255,255,.92);
+      --btnText: #0b0d12;
+      --btnHover: rgba(255,255,255,.98);
+      --btnAlt: rgba(255,255,255,.08);
+      --btnAltHover: rgba(255,255,255,.12);
+      --ok: rgba(120,255,180,.90);
+      --warn: rgba(255,210,120,.90);
+      --bad: rgba(255,140,140,.95);
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 900px at 20% 10%, rgba(255,255,255,.08), transparent 55%),
+        radial-gradient(900px 600px at 85% 30%, rgba(255,255,255,.06), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 28px 16px;
+    }
+
+    .shell{
+      width: min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 860px){
+      .shell{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      position:relative;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(1000px 420px at 20% 0%, var(--accentA), transparent 55%),
+                  radial-gradient(900px 420px at 100% 20%, var(--accentB), transparent 60%);
+      pointer-events:none;
+      filter: blur(0px);
+      opacity:.9;
+    }
+
+    .card-inner{
+      position:relative;
+      padding: 26px;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing:.2px;
+      user-select:none;
+    }
+
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 0 0 6px rgba(255,255,255,.06);
+    }
+
+    h1{
+      margin: 14px 0 8px;
+      font-size: clamp(28px, 3.6vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .lead{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height: 1.55;
+      max-width: 58ch;
+    }
+
+    .grid{
+      display:grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .btnRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    a.btn, button.btn{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 13px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      transition: transform .18s ease, background .18s ease, opacity .18s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .primary{
+      background: var(--btn);
+      color: var(--btnText);
+    }
+    .primary:hover{ background: var(--btnHover); transform: translateY(-1px); }
+    .alt{
+      background: var(--btnAlt);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+    .alt:hover{ background: var(--btnAltHover); transform: translateY(-1px); }
+
+    .mini{
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 650;
+      font-size: 13.5px;
+    }
+
+    .panel{
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.20);
+      overflow:hidden;
+    }
+
+    .panel-inner{
+      padding: 18px 18px 16px;
+    }
+
+    .meta{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .label{
+      color: var(--muted2);
+      font-size: 12.5px;
+    }
+
+    .value{
+      font-family: var(--mono);
+      font-size: 13px;
+      color: rgba(233,236,243,.80);
+    }
+
+    .steps{
+      display:grid;
+      gap: 10px;
+      margin: 12px 0 0;
+      padding:0;
+      list-style:none;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .steps li{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+    }
+
+    .badge{
+      flex: 0 0 auto;
+      width: 22px; height: 22px;
+      border-radius: 7px;
+      display:grid;
+      place-items:center;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.86);
+      font-size: 12px;
+      margin-top: 1px;
+    }
+
+    .status{
+      margin-top: 14px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+    .status strong{ color: rgba(255,255,255,.92); }
+
+    .footer{
+      margin-top: 14px;
+      color: rgba(233,236,243,.45);
+      font-size: 12.5px;
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .link{
+      color: rgba(233,236,243,.72);
+      text-decoration:none;
+      border-bottom: 1px solid rgba(233,236,243,.18);
+      padding-bottom: 2px;
+    }
+    .link:hover{ color: rgba(233,236,243,.92); border-bottom-color: rgba(233,236,243,.35); }
+
+    .icon{
+      width: 18px;
+      height: 18px;
+      display:inline-block;
+    }
+    .icon svg{ width:100%; height:100%; }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="shell">
+
+      <!-- Left: hero -->
+      <article class="card">
+        <div class="card-inner">
+          <div class="kicker"><span class="dot"></span> Private Server Gateway</div>
+
+          <h1>Зайти на приватный сервер Roblox</h1>
+          <p class="lead">
+            Это переходник: сначала откроется браузер, затем — приложение Roblox Player.
+            Если браузер попросит разрешение, нажми <b>Открыть Roblox</b>.
+          </p>
+
+          <div class="btnRow">
+            <!-- Основная кнопка -->
+            <a id="openApp" class="btn primary" href="#">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M8 16.5L16.5 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M10 7.5H16.5V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M6.5 18A2.5 2.5 0 0 1 4 15.5V6.5A2.5 2.5 0 0 1 6.5 4h9A2.5 2.5 0 0 1 18 6.5v9A2.5 2.5 0 0 1 15.5 18h-9Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </span>
+              Открыть в Roblox
+            </a>
+
+            <!-- Фоллбек -->
+            <a class="btn alt" target="_blank" rel="noopener"
+               href="https://www.roblox.com/games/8416011646?privateServerLinkCode=PszLuw">
+              Открыть через сайт
+            </a>
+          </div>
+
+          <div id="status" class="status">
+            <strong>Подсказка:</strong> если ничего не произошло — нажми “Открыть через сайт”, затем <b>Play</b>.
+          </div>
+
+          <div class="footer">
+            <span>© <span id="y"></span> • Minimal gateway</span>
+            <span>Если Roblox не установлен — откроется сайт</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Right: info panel -->
+      <aside class="panel">
+        <div class="panel-inner">
+          <div class="meta">
+            <div>
+              <div class="label">Place ID</div>
+              <div class="value">8416011646</div>
+            </div>
+            <div style="text-align:right">
+              <div class="label">Join code</div>
+              <div class="value">PszLuw</div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="label">Как это работает</div>
+            <ul class="steps">
+              <li><span class="badge">1</span><span>Ты нажимаешь <b>Открыть в Roblox</b>.</span></li>
+              <li><span class="badge">2</span><span>Браузер пытается открыть ссылку вида <span style="font-family:var(--mono)">roblox://…</span>.</span></li>
+              <li><span class="badge">3</span><span>Roblox Player запускается и подключает к приватному серверу.</span></li>
+            </ul>
+
+            <div class="label" style="margin-top:10px;">Если кнопка не сработала</div>
+            <ul class="steps">
+              <li><span class="badge">•</span><span>На iOS/Android иногда нужно подтверждение открытия приложения.</span></li>
+              <li><span class="badge">•</span><span>На ПК некоторые браузеры блокируют автопереход — тогда используй “Открыть через сайт”.</span></li>
+            </ul>
+
+            <button id="copy" class="btn alt mini" type="button">
+              Скопировать ссылку на сайт
+            </button>
+
+            <div class="status" style="margin-top:0;">
+              <strong>Для Discord-кнопки:</strong> используй URL этой страницы (GitHub Pages).
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // === Настройки приватного сервера ===
+    const PLACE_ID = "8416011646";
+    const JOIN_CODE = "PszLuw";
+
+    // Deep link (в приложение)
+    const deepLink = `roblox://placeId=${PLACE_ID}&launchData=${encodeURIComponent("psjoincode=" + JOIN_CODE)}`;
+
+    const statusEl = document.getElementById("status");
+    const openApp = document.getElementById("openApp");
+    const copyBtn = document.getElementById("copy");
+    const yearEl = document.getElementById("y");
+    yearEl.textContent = new Date().getFullYear();
+
+    function setStatus(kind, text){
+      statusEl.innerHTML = text;
+      // лёгкая семантика по цветам через border/эмодзи не делаем — оставляем “дорого” нейтральным
+    }
+
+    // Попытка открыть приложение по клику (это важно: браузеры любят user gesture)
+    openApp.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      setStatus("try", "<strong>Открываю Roblox…</strong> Если появится запрос браузера — подтверди.");
+
+      // Нативный переход в roblox://
+      window.location.href = deepLink;
+
+      // Фоллбек-подсказка через пару секунд
+      // (мы НЕ можем 100% понять, открылось ли приложение — браузеры это скрывают)
+      setTimeout(() => {
+        setStatus("hint",
+          "<strong>Если Roblox не открылся:</strong> нажми “Открыть через сайт” и затем <b>Play</b>."
+        );
+      }, 1800);
+    });
+
+    // Копирование текущей страницы (удобно для вставки в Discord)
+    copyBtn.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(window.location.href);
+        copyBtn.textContent = "Ссылка скопирована ✓";
+        setTimeout(() => copyBtn.textContent = "Скопировать ссылку на сайт", 1400);
+      }catch{
+        // очень старые браузеры
+        prompt("Скопируй ссылку:", window.location.href);
+      }
+    });
+  </script>
+</body>
+</html>
